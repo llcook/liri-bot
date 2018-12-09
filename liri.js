@@ -4,16 +4,17 @@ require("dotenv").config();
 // Add the code required to import the keys.js file and store it in a variable.
 var keys = require("./keys");
 
-// You should then be able to access your keys information like so
-// var spotify = new Spotify(keys.spotify);
-
 var fs = require("fs");
 var axios = require("axios");
 var moment = require("moment");
+
 // var Spotify = require("node-spotify-api");
+// var spotify = new Spotify(keys.spotify);
 
 var action = process.argv[2];
 var userInput = process.argv.slice(3).join("+");
+
+var info;
 
 // Make it so liri.js can take in one of the following commands:
 
@@ -43,22 +44,18 @@ switch (action) {
 
 // `node liri.js concert-this <artist/band name here>`
 
-// * This will search the Bands in Town Artist Events API (`"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"`) for an artist and render the following information about each event to the terminal:
-
-// * Name of the venue
-
-// * Venue location
-
 // * Date of the Event (use moment to format this as "MM/DD/YYYY")
 
 function concertThis() {
 
-    var queryUrl = "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=009247c0fab99bb363c92c77e63f724b";
+    var bandsKey = "009247c0fab99bb363c92c77e63f724b";
+
+    var queryUrl = "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=" + bandsKey;
 
     axios.get(queryUrl)
     .then(function(response) {
 
-        var info = response.data;
+        info = response.data;
 
         for (var i = 0; i < response.data.length; i++) {
             var artist = info[i].lineup;
@@ -74,19 +71,7 @@ function concertThis() {
 
 // `node liri.js spotify-this-song '<song name here>'`
 
-// * This will show the following information about the song in your terminal/bash window
-
-// * Artist(s)
-
-// * The song's name
-
-// * A preview link of the song from Spotify
-
-// * The album that the song is from
-
-// * If no song is provided then your program will default to "The Sign" by Ace of Base.
-
-// * You will utilize the [node-spotify-api](https://www.npmjs.com/package/node-spotify-api) package in order to retrieve song information from the Spotify API.
+// * This will show the following information about the song in your terminal/bash window * Artist(s) * The song's name * A preview link of the song from Spotify * The album that the song is from * If no song is provided then your program will default to "The Sign" by Ace of Base.
 
 function spotifyThisSong() {
 
@@ -94,30 +79,28 @@ function spotifyThisSong() {
 
 // `node liri.js movie-this '<movie name here>'`
 
-// * This will output the following information to your terminal/bash window:
-
-// ```
-//   * Title of the movie.
-//   * Year the movie came out.
-//   * IMDB Rating of the movie.
-//   * Rotten Tomatoes Rating of the movie.
-//   * Country where the movie was produced.
-//   * Language of the movie.
-//   * Plot of the movie.
-//   * Actors in the movie.
-// ```
-
-// * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-
-// * If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>
-
-// * It's on Netflix!
-
-// * You'll use the `axios` package to retrieve data from the OMDB API.
-// omdb api key: trilogy
-
 function movieThis() {
 
+    var movieKey = "trilogy";
+
+    var queryUrl = "http://www.omdbapi.com/?apikey=" + movieKey + "&t=" + userInput;
+
+    axios.get(queryUrl)
+    .then(function(response) {
+        
+        info = response.data;
+        var title = info.Title;
+        var year = info.Year;
+        var imdbRate = info.imdbRating;
+        var tomatoRate = info.Ratings[1].Value;
+        var country = info.Country;
+        var lang = info.Language;
+        var plot = info.Plot;
+        var actors = info.Actors;
+
+        console.log(`::::::::::::::::::\n\nFilm: ${title}\nYear: ${year}\nIMDB rating: ${imdbRate}\nRotten Tomatoes rating: ${tomatoRate}\nCountry: ${country}\nLanguage: ${lang}\nPlot: ${plot}\nActors: ${actors}\n\n::::::::::::::::::`);
+
+    })
 }
 
 //`node liri.js do-what-it-says`
