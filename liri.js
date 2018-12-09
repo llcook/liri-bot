@@ -8,8 +8,8 @@ var fs = require("fs");
 var axios = require("axios");
 var moment = require("moment");
 
-// var Spotify = require("node-spotify-api");
-// var spotify = new Spotify(keys.spotify);
+var Spotify = require("node-spotify-api");
+var spotify = new Spotify(keys.spotify);
 
 var action = process.argv[2];
 var userInput = process.argv.slice(3).join("+");
@@ -74,6 +74,21 @@ function concertThis() {
 // * This will show the following information about the song in your terminal/bash window * Artist(s) * The song's name * A preview link of the song from Spotify * The album that the song is from * If no song is provided then your program will default to "The Sign" by Ace of Base.
 
 function spotifyThisSong() {
+
+    spotify.search({ type: "track", query: userInput, limit: 10}, function(err, data) {
+        if (err) {
+          return console.log('Error occurred: ' + err);
+        }
+
+        var info = data.tracks.items;
+        var artist = info[0].artists[0].name;
+        var song = info[0].name
+        var preview = info[0].preview_url;
+        var album = info[0].album.name;
+       
+      console.log(`::::::::::::::::::\n\nArtist: ${artist}\nSong: ${song}\nSpotify preview: ${preview}\nAlbum: ${album}\n`);
+
+      });
 
 }
 
