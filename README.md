@@ -7,21 +7,21 @@ A simple digital assistant that recognizes a user's text input to return informa
 
 _concert-this artist name_
 
-    e.g. concert-this nine inch nails
+    concert-this nine inch nails
 
-    Queries the Bandsintown API and returns concert information for the artist requested
+    Queries the Bandsintown API and returns upcoming concert information for Nine Inch Nails
 
 _spotify-this-song song name_
 
-    e.g. spotify-this-song under pressure
+    spotify-this-song under pressure
 
-    Queries the Spotify API and returns song information based on the user request
+    Queries the Spotify API and returns song information for "Under Pressure"
 
 _movie-this movie name_
 
-    e.g. movie-this the goonies
+    movie-this the goonies
 
-    Queries the OMDB and returns movie information based on the user request
+    Queries the OMDB and returns movie information about "The Goonies"
 
 _do-what-it-says_
 
@@ -31,5 +31,4 @@ _do-what-it-says_
 
 * do-what-it-says is only functional for the spotify-this-song action
 * moment.js not implemented for date formatting in concert-this
-* "this is loaded" is the first thing to return on each function execution
 
